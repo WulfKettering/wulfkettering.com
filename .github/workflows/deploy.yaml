@@ -1,0 +1,24 @@
+name: Deploy WulfKettering.com to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy-to-cloudflare:
+    name: Deploy to Cloudflare Pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🚀 Deploy with Wrangler
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: pages deploy ./public --project-name ${{ secrets.CLOUDFLARE_PAGES_PROJECT_NAME }} --branch master
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
